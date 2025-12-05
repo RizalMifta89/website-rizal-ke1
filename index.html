@@ -3,235 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnapTikTok - Rizal Downloader</title>
+    <title>SnapTikTok - Debug Mode</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: sans-serif;
-            background: #111;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .card {
-            background: #222;
-            border: 1px solid #333;
-            padding: 30px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-        input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            background: #ff0050;
-            color: white;
-            font-size: 1rem;
-        }
-        button:hover { background: #d60043; }
-        .thumb-img { width: 100%; border-radius: 10px; margin: 15px 0; }
-        .download-btn { background: #00f2ea; color: #000; display: block; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; margin-top: 10px; }
-        #resultArea { display: none; margin-top: 20px; border-top: 1px solid #444; padding-top: 20px; }
-        .loader { display: none; color: yellow; margin: 10px 0; font-weight: bold; }
+        body { font-family: sans-serif; background: #000; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; text-align: center; }
+        input { width: 100%; padding: 15px; margin-bottom: 10px; }
+        button { width: 100%; padding: 15px; background: #ff0050; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .box { border: 1px solid white; padding: 20px; margin-top: 20px; width: 100%; display: none; }
+        a { color: cyan; font-size: 1.2rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1 style="color: #ff0050; margin-bottom: 10px;">SnapTikTok 🎵</h1>
-        <p style="margin-bottom: 20px; color: #aaa;">Versi: Rizal Ke-1</p>
+    <h1>🔍 MODE DETEKTIF</h1>
+    <p>Mari kita cari tahu kenapa error!</p>
 
-        <input type="text" id="urlInput" placeholder="Tempel link TikTok/Douyin..." autocomplete="off">
-        <button id="btnSubmit" onclick="downloadVideo()">🚀 Download Sekarang</button>
-        
-        <div class="loader" id="loader">Sedang menghubungi Mesin Rizal... Tunggu sebentar...</div>
+    <input type="text" id="urlInput" placeholder="Tempel Link TikTok...">
+    <button onclick="cekMasalah()">Cek & Download</button>
 
-        <div id="resultArea">
-            <h3 id="videoTitle">Judul Video</h3>
-            <img id="videoThumb" class="thumb-img" src="" alt="">
-            <a id="downloadLink" href="#" target="_blank" class="download-btn">⬇️ DOWNLOAD VIDEO</a>
-        </div>
+    <div id="statusBox" style="margin-top: 20px; color: yellow;"></div>
+
+    <div id="resultArea" class="box">
+        <h3 id="judul"></h3>
+        <a id="linkDown" href="#" target="_blank">KLIK UNTUK DOWNLOAD MP4</a>
     </div>
 
     <script>
-        async function downloadVideo() {
+        async function cekMasalah() {
             const inputUrl = document.getElementById('urlInput').value;
-            const resultArea = document.getElementById('resultArea');
-            const loader = document.getElementById('loader');
-            const btn = document.getElementById('btnSubmit');
+            const status = document.getElementById('statusBox');
+            
+            if(!inputUrl) { alert("Link kosong!"); return; }
 
-            if (!inputUrl) { alert("Link kosong!"); return; }
+            // URL Render Anda (Sudah diperbaiki)
+            const API_URL = "https://mesin-website-rizal-ke1.onrender.com/api/download";
 
-            // Tampilkan Loading
-            loader.style.display = "block";
-            resultArea.style.display = "none";
-            btn.disabled = true;
-            btn.innerText = "Sabar ya...";
-
+            // 1. LAPORAN DETEKTIF: Cek Link Apa yang Dipakai
+            status.innerText = "1. Mencoba menghubungi: \n" + API_URL;
+            
             try {
-                // SAYA SUDAH MEMPERBAIKI LINK INI UNTUK ANDA:
-                // Tidak ada lagi garis miring ganda (//) yang bikin error.
-                const API_URL = "https://mesin-website-rizal-ke1.onrender.com/api/download"; 
-                
                 const response = await fetch(API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ url: inputUrl })
                 });
 
-                const data = await response.json();
+                // 2. LAPORAN DETEKTIF: Cek Status Server
+                status.innerText += "\n\n2. Status Server: " + response.status;
 
-                if (data.status === "success") {
-                    document.getElementById('videoTitle').innerText = data.title;
-                    document.getElementById('videoThumb').src = data.thumbnail;
-                    document.getElementById('downloadLink').href = data.download_url;
-                    resultArea.style.display = "block";
-                } else {
-                    alert("Gagal: " + (data.message || "Link tidak valid"));
+                if (response.status === 403) {
+                    alert("⚠️ DETEKTIF MENEMUKAN MASALAH:\nServer menolak (403 Forbidden).\nIni biasanya karena Vercel memblokir Render, atau Jaringan HP memblokir Render.");
+                } else if (response.status === 500) {
+                    alert("⚠️ DETEKTIF MENEMUKAN MASALAH:\nMesin Render Error (Mungkin link TikTok tidak valid/susah diambil).");
                 }
-
-            } catch (error) {
-                alert("Gagal terhubung ke Mesin. Coba klik tombol download sekali lagi (server mungkin sedang bangun tidur).");
-                console.error(error);
-            } finally {
-                loader.style.display = "none";
-                btn.disabled = false;
-                btn.innerText = "🚀 Download Sekarang";
-            }
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnapTikTok - Rizal Downloader</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: sans-serif;
-            background: #111;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .card {
-            background: #222;
-            border: 1px solid #333;
-            padding: 30px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-        input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            background: #ff0050;
-            color: white;
-            font-size: 1rem;
-        }
-        button:hover { background: #d60043; }
-        .thumb-img { width: 100%; border-radius: 10px; margin: 15px 0; }
-        .download-btn { background: #00f2ea; color: #000; display: block; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; margin-top: 10px; }
-        #resultArea { display: none; margin-top: 20px; border-top: 1px solid #444; padding-top: 20px; }
-        .loader { display: none; color: yellow; margin: 10px 0; font-weight: bold; }
-    </style>
-</head>
-<body>
-
-    <div class="card">
-        <h1 style="color: #ff0050; margin-bottom: 10px;">SnapTikTok 🎵</h1>
-        <p style="margin-bottom: 20px; color: #aaa;">Versi: Rizal Ke-1</p>
-
-        <input type="text" id="urlInput" placeholder="Tempel link TikTok/Douyin..." autocomplete="off">
-        <button id="btnSubmit" onclick="downloadVideo()">🚀 Download Sekarang</button>
-        
-        <div class="loader" id="loader">Sedang menghubungi Mesin Rizal... Tunggu sebentar...</div>
-
-        <div id="resultArea">
-            <h3 id="videoTitle">Judul Video</h3>
-            <img id="videoThumb" class="thumb-img" src="" alt="">
-            <a id="downloadLink" href="#" target="_blank" class="download-btn">⬇️ DOWNLOAD VIDEO</a>
-        </div>
-    </div>
-
-    <script>
-        async function downloadVideo() {
-            const inputUrl = document.getElementById('urlInput').value;
-            const resultArea = document.getElementById('resultArea');
-            const loader = document.getElementById('loader');
-            const btn = document.getElementById('btnSubmit');
-
-            if (!inputUrl) { alert("Link kosong!"); return; }
-
-            // Tampilkan Loading
-            loader.style.display = "block";
-            resultArea.style.display = "none";
-            btn.disabled = true;
-            btn.innerText = "Sabar ya...";
-
-            try {
-                // SAYA SUDAH MEMPERBAIKI LINK INI UNTUK ANDA:
-                // Tidak ada lagi garis miring ganda (//) yang bikin error.
-                const API_URL = "https://mesin-website-rizal-ke1.onrender.com/api/download"; 
-                
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ url: inputUrl })
-                });
 
                 const data = await response.json();
 
                 if (data.status === "success") {
-                    document.getElementById('videoTitle').innerText = data.title;
-                    document.getElementById('videoThumb').src = data.thumbnail;
-                    document.getElementById('downloadLink').href = data.download_url;
-                    resultArea.style.display = "block";
+                    status.innerText += "\n\n3. BERHASIL! Data diterima.";
+                    document.getElementById('judul').innerText = data.title;
+                    document.getElementById('linkDown').href = data.download_url;
+                    document.getElementById('resultArea').style.display = "block";
                 } else {
-                    alert("Gagal: " + (data.message || "Link tidak valid"));
+                    status.innerText += "\n\n3. GAGAL: " + JSON.stringify(data);
                 }
 
             } catch (error) {
-                alert("Gagal terhubung ke Mesin. Coba klik tombol download sekali lagi (server mungkin sedang bangun tidur).");
-                console.error(error);
-            } finally {
-                loader.style.display = "none";
-                btn.disabled = false;
-                btn.innerText = "🚀 Download Sekarang";
+                status.innerText += "\n\n❌ ERROR PARAH: " + error.message;
+                alert("ERROR JARINGAN!\nBrowser Anda gagal menghubungi Render.\nPastikan sinyal bagus atau coba pakai Wifi.");
             }
         }
     </script>
