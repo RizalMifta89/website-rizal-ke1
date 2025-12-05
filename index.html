@@ -98,8 +98,7 @@
 
             try {
                 // ==========================================
-                // GANTI URL DI BAWAH INI DENGAN URL RENDER ANDA!
-                // Jangan lupa tambahkan "/api/download" di belakangnya
+                // LINK RENDER ANDA SUDAH SAYA PASANG DI SINI
                 // ==========================================
                 const API_URL = "https://mesin-website-rizal-ke1.onrender.com/api/download"; 
                 
@@ -120,11 +119,13 @@
                     
                     resultArea.style.display = "block";
                 } else {
-                    alert("Gagal: " + (data.message || "Video tidak ditemukan/Link salah"));
+                    // Jika gagal (misal link salah)
+                    alert("Gagal: " + (data.message || "Video tidak ditemukan. Pastikan link benar."));
                 }
 
             } catch (error) {
-                alert("Terjadi kesalahan! (Mungkin server Render sedang 'Tidur', coba klik lagi dalam 30 detik).");
+                // Jika error jaringan / server tidur
+                alert("Mesin sedang bangun tidur atau ada gangguan. Coba klik Download lagi dalam 30 detik!");
                 console.error(error);
             } finally {
                 // 5. Kembalikan tombol seperti semula
