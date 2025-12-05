@@ -3,69 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Seru Pertamaku!</title>
+    <title>SnapTikTok - Downloader Tanpa Watermark</title>
     <style>
-        /* Ini CSS untuk mengatur gaya tampilan agar keren */
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
-            /* Latar belakang gelap agar warna pop-up */
-            background-color: #0f0f1a;
+        /* Reset dasar */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e0533, #111);
+            color: white;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            text-align: center;
-        }
-
-        .container {
+            justify-content: center;
             padding: 20px;
         }
 
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* Efek kaca buram */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
         h1 {
-            font-size: 4rem; /* Ukuran teks besar */
-            /* Membuat gradasi warna pelangi */
-            background: linear-gradient(
-                45deg, 
-                #ff0000, #ff7300, #fffb00, #48ff00, 
-                #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000
-            );
-            background-size: 400%; /* Ukuran background diperbesar untuk animasi */
-            
-            /* Trik agar warna background masuk ke dalam teks */
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #00f2ea, #ff0050); /* Warna khas TikTok */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-
-            /* Menambahkan animasi agar warnanya bergerak */
-            animation: rainbow-move 10s linear infinite;
-            text-shadow: 0px 0px 20px rgba(255,255,255,0.2); /* Sedikit efek cahaya */
         }
 
-        p {
+        p { color: #ccc; margin-bottom: 30px; }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+
+        input {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.9);
+        }
+
+        button {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            background: #ff0050;
             color: white;
-            font-size: 1.2rem;
-            margin-top: 20px;
+            transition: 0.3s;
         }
 
-        /* Definisi animasi pergerakan warna */
-        @keyframes rainbow-move {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        button:hover {
+            background: #d60043;
+            transform: scale(1.02);
         }
 
-        /* Agar responsif di HP (teks mengecil sedikit) */
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Responsif untuk Tablet/PC agar tombol di samping input */
+        @media (min-width: 600px) {
+            .input-group { flex-direction: row; }
+            input { flex: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Halo Dunia, Ini Website Seru Pertamaku! ✨</h1>
-        <p>Dibuat dengan HTML & CSS Warna-Warni</p>
+
+    <div class="card">
+        <h1>SnapTikTok 🎵</h1>
+        <p>Download video TikTok/Douyin tanpa watermark (Gratis) kumaha aing be</p>
+
+        <div class="input-group">
+            <input type="text" placeholder="Tempel tautan video di sini...">
+            <button onclick="alert('Ini baru tampilan ya, mesinnya belum dipasang! 😄')">Download</button>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Dibuat untuk Belajar Coding Oleh Rizal
+        </div>
     </div>
+
 </body>
 </html>
