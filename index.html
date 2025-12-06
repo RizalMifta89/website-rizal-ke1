@@ -3,45 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnapTikTok - Rizal Downloader</title>
+    <title>TukangDownload- Facebook/Instagram</title>
     <style>
+        /* Gaya Tampilan (CSS) */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #000000, #1a1a1a);
+            background: linear-gradient(135deg, #1e0533, #111);
             color: white;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
         .card {
-            background: #1e1e1e;
-            border: 1px solid #333;
-            box-shadow: 0 0 20px rgba(0, 242, 234, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 30px;
             border-radius: 20px;
             width: 100%;
             max-width: 500px;
             text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
         h1 { margin-bottom: 5px; background: linear-gradient(to right, #00f2ea, #ff0050); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p { color: #888; margin-bottom: 25px; font-size: 0.9rem; }
+        p { color: #ccc; margin-bottom: 20px; font-size: 0.9rem; }
         
         input {
             width: 100%;
             padding: 15px;
             border-radius: 10px;
             border: none;
-            background: #333;
-            color: white;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-size: 1rem;
-            outline: none;
         }
-        input:focus { ring: 2px solid #00f2ea; }
-
         button {
             width: 100%;
             padding: 15px;
@@ -51,68 +49,40 @@
             cursor: pointer;
             background: #ff0050;
             color: white;
-            font-size: 1rem;
-            transition: 0.2s;
+            transition: 0.3s;
         }
-        button:hover { background: #d60043; transform: scale(1.02); }
-        button:disabled { background: #555; cursor: wait; }
+        button:hover { background: #d60043; }
+        button:disabled { background: #555; cursor: not-allowed; }
 
         /* Area Hasil */
-        #resultArea { display: none; margin-top: 25px; border-top: 1px solid #333; padding-top: 20px; animation: fadeIn 0.5s; }
-        
-        /* MANTRA ANTI BLOKIR THUMBNAIL */
-        .thumb-img { 
-            width: 100%; 
-            border-radius: 10px; 
-            margin-bottom: 15px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        
-        /* MANTRA ANTI BLOKIR DOWNLOAD */
-        .download-btn { 
-            background: #00f2ea; 
-            color: #000; 
-            display: block; 
-            text-decoration: none; 
-            padding: 15px; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            font-size: 1.1rem;
-        }
-        .download-btn:hover { background: #00c4bd; }
-
-        .loader { display: none; margin: 15px auto; color: #00f2ea; font-weight: bold; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #resultArea { margin-top: 20px; display: none; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
+        .thumb-img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .download-btn { background: #00f2ea; color: #000; display: block; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; }
+        .loader { display: none; margin: 10px auto; border: 4px solid #f3f3f3; border-top: 4px solid #ff0050; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h1>SnapTikTok 🎵</h1>
-        <p>Downloader Video Tanpa Watermark</p>
+        <h1>Tukang Download Facebook dan Instagram 🎵</h1>
+        <p>Tenden Didie</p>
 
-        <input type="text" id="urlInput" placeholder="Tempel link TikTok/Douyin di sini..." autocomplete="off">
-        <button id="btnSubmit" onclick="downloadVideo()">🚀 Download Video</button>
+        <input type="text" id="urlInput" placeholder="https://v.douyin.com/..." autocomplete="off">
+        <button id="btnSubmit" onclick="downloadVideo()">Download Video</button>
         
-        <div class="loader" id="loader">Sedang memproses...</div>
+        <div class="loader" id="loader"></div>
 
         <div id="resultArea">
-            <h3 id="videoTitle" style="margin-bottom: 10px; font-size: 1rem; color: #eee;"></h3>
-            
-            <img id="videoThumb" class="thumb-img" src="" alt="Thumbnail" referrerpolicy="no-referrer">
-            
-            <a id="downloadLink" href="#" target="_blank" class="download-btn" referrerpolicy="no-referrer" rel="noreferrer">
-                ⬇️ DOWNLOAD MP4
-            </a>
-            
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">
-                *Jika diklik malah play video, tekan titik tiga di pojok video > Download.
-            </p>
+            <h3 id="videoTitle" style="margin-bottom: 10px; font-size: 1rem;">Judul Video</h3>
+            <img id="videoThumb" class="thumb-img" src="" alt="Thumbnail">
+            <a id="downloadLink" href="#" target="_blank" class="download-btn">⬇️ Download MP4 (No WM)</a>
         </div>
     </div>
 
     <script>
         async function downloadVideo() {
+            // 1. Ambil URL dari kotak input
             const inputUrl = document.getElementById('urlInput').value;
             const resultArea = document.getElementById('resultArea');
             const loader = document.getElementById('loader');
@@ -120,16 +90,20 @@
 
             if (!inputUrl) { alert("Link tidak boleh kosong!"); return; }
 
-            // Tampilan Loading
+            // 2. Tampilkan Loading
             loader.style.display = "block";
             resultArea.style.display = "none";
             btn.disabled = true;
-            btn.innerText = "Tunggu sebentar...";
+            btn.innerText = "Sedang Memproses...";
 
             try {
-                // Link Render Anda yang sudah TERBUKTI BERHASIL (Status 200)
-                const API_URL = "https://mesin-website-rizal-ke1.onrender.com/api/download"; 
+                // ==========================================
+                // GANTI URL DI BAWAH INI DENGAN URL RENDER ANDA!
+                // Jangan lupa tambahkan "/api/download" di belakangnya
+                // ==========================================
+                const API_URL = "https://mesin-website-rizal-ke1-1.onrender.com/api/download"; 
                 
+                // 3. Kirim data ke Render (Server Python)
                 const response = await fetch(API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -138,25 +112,25 @@
 
                 const data = await response.json();
 
+                // 4. Jika Sukses
                 if (data.status === "success") {
-                    // Masukkan data ke HTML
                     document.getElementById('videoTitle').innerText = data.title;
                     document.getElementById('videoThumb').src = data.thumbnail;
                     document.getElementById('downloadLink').href = data.download_url;
                     
-                    // Tampilkan kotak hasil
                     resultArea.style.display = "block";
                 } else {
-                    alert("Gagal: " + (data.message || "Video tidak ditemukan"));
+                    alert("Gagal: " + (data.message || "Video tidak ditemukan/Link salah"));
                 }
 
             } catch (error) {
-                alert("Error Jaringan. Coba lagi.");
+                alert("Terjadi kesalahan! (Mungkin server Render sedang 'Tidur', coba klik lagi dalam 30 detik).");
                 console.error(error);
             } finally {
+                // 5. Kembalikan tombol seperti semula
                 loader.style.display = "none";
                 btn.disabled = false;
-                btn.innerText = "🚀 Download Video";
+                btn.innerText = "Download Video";
             }
         }
     </script>
